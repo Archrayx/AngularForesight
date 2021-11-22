@@ -1,0 +1,173 @@
+<mat-drawer-container class="example-container" style="background-color: #b2dce4;">
+
+    <!-- Side Drawer For filter options -->
+
+
+
+
+
+
+
+
+
+
+    <mat-drawer #drawer class="example-sidenav" mode="over" style="background-color: rgb(96, 96, 107);">
+        <div class="search-div">
+            <!-- <mat-form-field class="search-form-field" *ngFor="let item of filterSelectObj" floatLabel="never">
+                <input [(ngModel)]="item.search" matInput placeholder="Search {{item.header}}" autocomplete="off" (keyup)="filterChange(item.key,$event)">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="item.search = ''" *ngIf="item.search"><mat-icon>close</mat-icon></button>
+                <mat-label>Filter {{item.header}}</mat-label>
+                <select matNativeControl name={{item.key}} [(ngModel)]="item.modelValue" (change)="filterChange(item,$event)">
+         <option value="" disabled selected>--Select {{item.header}} --</option>
+         <option [value]="item" *ngFor="let item of item.filterOptions">{{item}}</option>
+       </select>
+            </mat-form-field> -->
+            <button mat-raised-button color="warn" (click)="resetFilters()">Reset</button>
+            <button mat-raised-button *ngIf="isAuthenticated" style="position: center;" (click)='openDialogAdd()'><mat-icon>add</mat-icon>Create</button>
+            <button type="button" mat-raised-button (click)="drawer.toggle()">Toggle sidenav</button>
+        </div>
+    </mat-drawer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- End of Drawer, main table area and stuff -->
+    <div class="container">
+        <mat-toolbar class="header-rows">
+            <span class="fill-remaining-space"></span>
+            <span>Soccer Tracker Project</span>
+            <span class="fill-remaining-space"></span>
+            <div style="text-align:center;"><button type="button" mat-raised-button (click)="drawer.toggle()">Open Menu</button></div>
+        </mat-toolbar>
+
+
+
+
+
+        <div class="example-sidenav-content">
+
+            <mat-table matSort [dataSource]='dataSource' class="mat-elevation-z8 demo-table">
+
+
+                <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
+                <ng-container *ngFor="let item of filterSelectObj; let i = index;">
+                    <!-- This Ng Container is for all rows besides Result and ResultFH using index i as a column tracker-->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                            <!-- mat-sort-header matSort-->
+                            <div>{{item.header}}</div>
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell class="header-rows" *matCellDef='let element'>{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- This Ng Container is used to color the cells in column 6 or 'Result Column' -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 2">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                            <!-- mat-sort-header matSort-->
+                            <div>{{item.header}}</div>
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell class="header-rows" *matCellDef='let element'>{{element[item.key] | date:'MM/dd/YYYY'}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- This Ng Container is used to color the cells in column 6 or 'Result Column' -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 6">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                            <!-- mat-sort-header matSort-->
+                            <div>{{item.header}}</div>
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell class="header-rows" *matCellDef='let element' [style.background-color]="element.resultColor">{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- This Ng Container is used to color the cells in column 7 or 'ResultFH Column' -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 7">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                            <!-- mat-sort-header matSort-->
+                            <div>{{item.header}}</div>
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell class="header-rows" *matCellDef='let element' [style.background-color]="element.resultColorFH">{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+
+
+
+
+                <ng-container [matColumnDef]='"Actions"'>
+                    <mat-header-cell class="header-rows" *matHeaderCellDef>
+                        Actions
+                    </mat-header-cell>
+                    <mat-cell class="header-rows" [ngClass]="'center'" *matCellDef='let row'>
+                        <button mat-icon-button (click)='openDialogUpdate(row)'><mat-icon>launch</mat-icon></button>
+                        <button mat-icon-button (click)='deleteEntry(row)'><mat-icon>delete</mat-icon></button>
+                    </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef>
+                        <mat-spinner></mat-spinner>
+                    </mat-footer-cell>
+                </ng-container>
+                <mat-header-row class="header-rows" *matHeaderRowDef="displayedColumns"> </mat-header-row>
+                <mat-row class="header-rows" *matRowDef='let row; let even = even; columns: displayedColumns;' [ngClass]="{gray:even}"></mat-row>
+                <mat-footer-row *matFooterRowDef=" [ 'loading'] " [ngClass]="{ 'hide':dataSource!=null} "></mat-footer-row>
+            </mat-table>
+            <mat-paginator class="header-rows" [pageSizeOptions]="[10,25,50,100,1000] " [pageSize]="25 " showFirstLastButtons></mat-paginator>
+        </div>
+        <!-- <app-add-item></app-add-item> -->
+    </div>
+</mat-drawer-container>
