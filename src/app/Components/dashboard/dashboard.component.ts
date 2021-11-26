@@ -217,7 +217,7 @@ export class DashboardComponent implements OnInit {
        this.displayedColumns.push(this.filterSelectObj[index].key)
     })
 
-    if(this.isAuthenticated){
+    if(!this.isAuthenticated){
       this.displayedColumns.push('Actions')};
     console.log("new FilterValues:" + this.filterValues + "\nnew DisplayedColumns: " + this.displayedColumns);
   }
