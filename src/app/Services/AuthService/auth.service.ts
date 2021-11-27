@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import {OktaAuth} from '@okta/okta-auth-js';
-
+import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 @Injectable({
   providedIn: 'root'
 })
