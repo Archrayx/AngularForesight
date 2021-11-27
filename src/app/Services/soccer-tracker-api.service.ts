@@ -71,11 +71,13 @@ export class SoccerTrackerApiService implements OnInit {
   listEntry(): Observable<any> {
 
 
-    return this.http.get(this.baseUrl + "allsoccerTrackers").pipe( catchError((err) => {
+    return this.http.get(this.baseUrl + "allsoccerTrackers").pipe(catchError((err) => {
+      const error = new Error(err);
+      throwError(() => {error})
       console.log('error caught in service')
       console.error(err);
       //Handle the error here
-      return throwError(err);    //Rethrow it back to component
+      return throwError(error);    //Rethrow it back to component
     }))
   }
 

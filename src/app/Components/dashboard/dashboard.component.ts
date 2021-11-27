@@ -231,6 +231,7 @@ getRemoteData(){
     //when objects are recieved, transformation are done to the data of ACR, Price_Delta, and Date using foreach item in remoteData
     //this allows proper string representation to be shown on table
      Object.keys(remoteData).forEach((key,index) =>{
+       //Data Manipulations Area with if statements before inserting into table columns
        if (remoteData[index].Price_Delta != null){
 
          remoteData[index].Price_Delta = (((remoteData[index].Price_Delta) * 100).toFixed(2)).toString() + "%";
@@ -238,16 +239,22 @@ getRemoteData(){
        if (remoteData[index].ACR != null){
        remoteData[index].ACR =  (((remoteData[index].ACR) * 100).toFixed(2)).toString() + "%";
        }
-      //  if (remoteData[index].Date != null) {
+       if (remoteData[index].Date != null) {
 
-      //    remoteData[index].Date = this.datePipe.transform(remoteData[index].Date, 'dd/MM/yyyy');
+         remoteData[index].Date = this.datePipe.transform(remoteData[index].Date, 'MM/dd/yyyy');
 
-      //  }
+       }
        if (remoteData[index].Result != null) {
          remoteData[index].resultColor = this.colorPallete(remoteData[index].Result);
        }
        if (remoteData[index].First_Half_Result != null) {
+
+         //remoteData[index].First_Half_Result = remoteData[index].First_Half_Result.length;
          remoteData[index].resultColorFH = this.colorPallete(remoteData[index].First_Half_Result);
+       }
+       if (remoteData[index].Possession != null) {
+
+         remoteData[index].Possession = (((remoteData[index].Possession) * 100).toFixed(0)).toString() + "%";
        }
     }
      )
@@ -259,9 +266,6 @@ getRemoteData(){
      this.dataSource = new MatTableDataSource(remoteData);
      this.dataSource.sort = this.sort;
      this.dataSource.paginator = this.paginator;
-    //  this.filterSelectObj.filter((o) => {
-    //    o.filterOptions = this.getFilterObject(remoteData, o.key);
-    //  });
      this.dataSource.filterPredicate = this.createFilter();
      console.log("filter Predicate Assigned")
    },
@@ -276,20 +280,30 @@ getRemoteData(){
 
   //filter Predicate used for filtering. checks generated filterValues on valueChange to filter per Column.
   //Match Case For all columns that wish to be filtered
-  createFilter() { let filterFunction = function (data:any, filter:any): boolean
+  createFilter() {
+
+    let filterFunction = function (data:any, filter:any): boolean
     { let searchTerms = JSON.parse(filter);
+      //console.log("this is data: ",data);
       //console.log("filter is: " + filter +"\searchTerm Rep: " + searchTerms)
        for (var property in searchTerms)
         {
           //console.log(property);
-           if (searchTerms.hasOwnProperty(property))
-             if (data[property] != null) {
-            { if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) == -1) return false; }
+          //console.log("has own protery:  ",searchTerms.hasOwnProperty(property), searchTerms[property]);
+           if (searchTerms.hasOwnProperty(property) && searchTerms[property]){
+
+           //first check to see if values are null or undefined if so return false for that entry
+             if (data[property] == null || data[property] == undefined) {
+               return false;
           }
-        }
+          //if values exist on property, then check if a match is present, which if not then return false else return true to pop item into filtered table
+             else if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1) return false;
+        }}
+          //console.log("This is a true search");
           return true;
          };
-         return filterFunction; }
+         return filterFunction;
+         }
 
 
   //Resets filterValue Array as a command that can be called (onClick) in the DOM

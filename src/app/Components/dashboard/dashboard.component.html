@@ -78,7 +78,7 @@
                 <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
                 <ng-container *ngFor="let item of filterSelectObj; let i = index;">
                     <!-- This Ng Container is for all rows besides Result and ResultFH using index i as a column tracker-->
-                    <ng-container [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2">
+                    <ng-container [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2 && i != 3">
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
                             <!-- mat-sort-header matSort-->
                             <div>{{item.header}}</div>
@@ -93,7 +93,7 @@
                         </ng-container>
                     </ng-container>
 
-                    <!-- This Ng Container is used to color the cells in column 6 or 'Result Column' -->
+                    <!-- This Ng Container is used for date pip in column 2, Dates -->
                     <ng-container [matColumnDef]='item.key' *ngIf="i == 2">
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
                             <!-- mat-sort-header matSort-->
@@ -106,6 +106,35 @@
                         </mat-header-cell>
                         <ng-container>
                             <mat-cell class="header-rows" *matCellDef='let element'>{{element[item.key] | date:'MM/dd/YYYY'}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- This Ng Container is used for ml price filter bar in column 3, ML Price -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 3">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                            <!-- mat-sort-header matSort-->
+                            <div>
+                                <button [matMenuTriggerFor]="aboveMenu">{{item.header}}</button>
+                                <mat-menu #aboveMenu="matMenu" yPosition="above" menuOpen={{menuBool}}>
+                                    <div fxLayout="column" (click)="$event.stopPropagation();">
+                                        <mat-placeholder>Min Range:
+                                        </mat-placeholder>
+                                        <input type="number">
+                                        <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" step="1000" min="0" max="100000" aria-label="units"></mat-slider>
+                                        <mat-placeholder>Max Range:</mat-placeholder>
+                                        <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" step="1000" min="0" max="100000" aria-label="units"></mat-slider>
+                                        <input type="number">
+                                    </div>
+                                </mat-menu>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell class="header-rows" *matCellDef='let element'>{{element[item.key]}}</mat-cell>
                         </ng-container>
                     </ng-container>
 

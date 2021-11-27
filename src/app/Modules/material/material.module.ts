@@ -24,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatOptionModule } from '@angular/material/core';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 
@@ -54,7 +55,8 @@ import { MatOptionModule } from '@angular/material/core';
     MatMenuModule,
     MatDividerModule,
     MatSlideToggleModule,
-    MatOptionModule
+    MatOptionModule,
+     MatSliderModule
 
   ],
   exports: [
@@ -81,7 +83,8 @@ import { MatOptionModule } from '@angular/material/core';
     MatMenuModule,
     MatDividerModule,
     MatSlideToggleModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSliderModule
 
 
   ]
