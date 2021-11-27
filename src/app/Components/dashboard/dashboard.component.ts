@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from '../add-item/add-item.component';
 import { UpdateItemComponent } from '../update-item/update-item.component';
 import { MatTableFilter } from 'mat-table-filter';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common'
 import { AuthService } from 'src/app/Services/AuthService/auth.service';
 
@@ -32,6 +32,9 @@ export class DashboardComponent implements OnInit {
   dataSource : any;
   displayedColumns:any[] = [];
   filterSelectObj : any[];
+  MLMin: number = -1000;
+  MLMax: number = 700;
+  MLArray: number[] = [];
 
  //is Atuhenticated for Action Column
 
@@ -43,9 +46,9 @@ export class DashboardComponent implements OnInit {
    and filter list options by unique value( currently disable at the bottom of this file) */
   constructor(public authService: AuthService,public service: SoccerTrackerApiService, public dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef, private datePipe : DatePipe) {
 
-    this.authService.isAuthenticated.subscribe(
-      (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
-    );
+    // this.authService.isAuthenticated.subscribe(
+    //   (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
+    // );
 
     this.filterSelectObj = [
       // {
@@ -82,7 +85,11 @@ export class DashboardComponent implements OnInit {
         header: "ML Price",
         search: "",
         filterOptions: [],
-        form: new FormControl('')
+        form: new FormControl(''),
+        formGroup: new FormGroup({
+          MLMin: new FormControl(),
+          MLMax: new FormControl()
+        })
       },
       {
         key: "C_205",
@@ -197,7 +204,7 @@ export class DashboardComponent implements OnInit {
 
   //calls generate and createDisplayedColumns method
   async ngOnInit(): Promise<void> {
-    this.isAuthenticated = await this.authService.checkAuthenticated();
+    // this.isAuthenticated = await this.authService.checkAuthenticated();
     this.checkIP();
     this.getRemoteData();
     this.createDisplayedColumns();
@@ -210,15 +217,32 @@ export class DashboardComponent implements OnInit {
   //
   createDisplayedColumns(){
      Object.keys(this.filterSelectObj).forEach((keys,index) =>{
+       if (index == 3){
+         console.log(keys);
+         this.filterSelectObj[index].form.valueChanges.subscribe((name: any) => {
+           this.filterValues[this.filterSelectObj[index].key] = name
+           this.dataSource.filter = JSON.stringify(this.filterValues)
+         })
+        //  this.filterSelectObj[index].formGroup.get("MLMin").valueChanges.subscribe((name: any) => {
+        //    this.filterValues["MLMin"] = name
+        //    this.dataSource.filter = JSON.stringify(this.filterValues)
+        //  })
+        //  this.filterSelectObj[index].formGroup.get("MLMax").valueChanges.subscribe((name: any) => {
+        //    this.filterValues["MLMax"] = name
+        //    this.dataSource.filter = JSON.stringify(this.filterValues)
+        //  })
+       }
+       else{
        this.filterSelectObj[index].form.valueChanges.subscribe((name: any) => {
          this.filterValues[this.filterSelectObj[index].key] = name
          this.dataSource.filter = JSON.stringify(this.filterValues)
        })
+      }
        this.displayedColumns.push(this.filterSelectObj[index].key)
     })
 
-    if(!this.isAuthenticated){
-      this.displayedColumns.push('Actions')};
+    // if(!this.isAuthenticated){
+    //   this.displayedColumns.push('Actions')};
     console.log("new FilterValues:" + this.filterValues + "\nnew DisplayedColumns: " + this.displayedColumns);
   }
 
@@ -227,15 +251,23 @@ getRemoteData(){
    this.service.listEntry().subscribe((x) => {
 
     //Retrieves remote data and assigns it to var remote data
-     const remoteData: any[] = x
+     const remoteData: any[] = x;
+     let tempMLArray:number[] = [];
     //when objects are recieved, transformation are done to the data of ACR, Price_Delta, and Date using foreach item in remoteData
     //this allows proper string representation to be shown on table
      Object.keys(remoteData).forEach((key,index) =>{
        //Data Manipulations Area with if statements before inserting into table columns
+       if (remoteData[index].ML_Price != null) {
+
+         tempMLArray.push(+remoteData[index].ML_Price);
+
+       }
+
        if (remoteData[index].Price_Delta != null){
 
          remoteData[index].Price_Delta = (((remoteData[index].Price_Delta) * 100).toFixed(2)).toString() + "%";
      }
+     //
        if (remoteData[index].ACR != null){
        remoteData[index].ACR =  (((remoteData[index].ACR) * 100).toFixed(2)).toString() + "%";
        }
@@ -263,6 +295,12 @@ getRemoteData(){
     //commented out call to get filter objects is disabled for feature use with entry listing if need
     //sets filter predicate function return by createFilter method (dug deep on github repo comments for it)
      console.log('remoteData Saved');
+     console.log("ML ARRAY:  ", this.MLArray);
+     this.MLArray = tempMLArray;
+     this.MLMax = Math.max(...tempMLArray);
+     this.filterSelectObj[3].formGroup.get("MLMax").setValue(this.MLMax);
+     this.MLMin = Math.min(...tempMLArray);
+     this.filterSelectObj[3].formGroup.get("MLMin").setValue(this.MLMin);
      this.dataSource = new MatTableDataSource(remoteData);
      this.dataSource.sort = this.sort;
      this.dataSource.paginator = this.paginator;
@@ -284,21 +322,26 @@ getRemoteData(){
 
     let filterFunction = function (data:any, filter:any): boolean
     { let searchTerms = JSON.parse(filter);
+
       //console.log("this is data: ",data);
       //console.log("filter is: " + filter +"\searchTerm Rep: " + searchTerms)
        for (var property in searchTerms)
         {
           //console.log(property);
           //console.log("has own protery:  ",searchTerms.hasOwnProperty(property), searchTerms[property]);
-           if (searchTerms.hasOwnProperty(property) && searchTerms[property]){
+         if (searchTerms.hasOwnProperty(property) && searchTerms[property] && !searchTerms.hasOwnProperty("MLMin") && !searchTerms.hasOwnProperty("MLMax")){
 
            //first check to see if values are null or undefined if so return false for that entry
              if (data[property] == null || data[property] == undefined) {
                return false;
           }
+
           //if values exist on property, then check if a match is present, which if not then return false else return true to pop item into filtered table
-             else if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1) return false;
-        }}
+             if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1)
+             {
+               return false
+              };
+            }}
           //console.log("This is a true search");
           return true;
          };

@@ -115,15 +115,22 @@
                             <!-- mat-sort-header matSort-->
                             <div>
                                 <button [matMenuTriggerFor]="aboveMenu">{{item.header}}</button>
-                                <mat-menu #aboveMenu="matMenu" yPosition="above" menuOpen={{menuBool}}>
+                                <mat-menu #aboveMenu="matMenu" yPosition="above">
                                     <div fxLayout="column" (click)="$event.stopPropagation();">
-                                        <mat-placeholder>Min Range:
-                                        </mat-placeholder>
-                                        <input type="number">
-                                        <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" step="1000" min="0" max="100000" aria-label="units"></mat-slider>
-                                        <mat-placeholder>Max Range:</mat-placeholder>
-                                        <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" step="1000" min="0" max="100000" aria-label="units"></mat-slider>
-                                        <input type="number">
+                                        <form [formGroup]="item.formGroup" appearance="outline">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Min Range:</mat-label>
+                                                <input matInput type="number" [value]="minVal" [(ngModel)]="item.formGroup.MLMin" formControlName="MLMin">
+                                            </mat-form-field>
+                                            <mat-slider #minVal thumbLabel tickInterval="5" step="5" min={{MLMin}} max={{MLMax}} [(ngModel)]="item.formGroup.MLMin" formControlName="MLMin" value={{MLMin}} aria-label="units"></mat-slider>
+
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Max Range:</mat-label>
+                                                <input matInput type="number" [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax">
+                                            </mat-form-field>
+                                            <mat-slider thumbLabel tickInterval="5" step="5" min={{MLMin}} max={{MLMax}} [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax" value={{MLMax}} aria-label="units"></mat-slider>
+                                        </form>
+
                                     </div>
                                 </mat-menu>
                             </div>

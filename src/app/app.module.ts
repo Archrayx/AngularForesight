@@ -16,13 +16,9 @@ import { MatTableFilterModule } from 'mat-table-filter';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { LoginComponent } from './Components/login/login.component';
-import { OktaAuth } from '@okta/okta-auth-js';
-import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 
-const authClient = new OktaAuth({
-  issuer: 'https://dev-1229688.okta.com/oauth2/default',
-  clientId: '0oa2uwqi1tj46zndy5d7'
-});
+
+
 
 @NgModule({
   declarations: [
@@ -49,13 +45,9 @@ const authClient = new OktaAuth({
     MaterialModule,
     ReactiveFormsModule,
     MatTableFilterModule,
-    OktaAuthModule
 
   ],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/' }, SoccerTrackerApiService, DatePipe, {
-    provide: OKTA_CONFIG,
-    useValue: { authClient }
-  }],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/' }, SoccerTrackerApiService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
