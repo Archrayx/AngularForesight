@@ -1,7 +1,21 @@
 /* adjust left and right position of full table compared to blue background*/
 
-.container {
-    margin: 0 70px;
+.mat-drawer-container-div {
+    display: block;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -webkit-box-align: start;
+}
+
+.mat-drawer {
+    padding: 20px;
+}
+
+.toolbar-container {
+    display: block;
+    max-width: fit-content;
 }
 
 
@@ -22,19 +36,12 @@
 
 /* mat drawer container class, keep same*/
 
-.example-container {
-    width: 100%;
-    height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    -webkit-box-align: start;
-}
-
 
 /* main scalable page content container
    change size of mat-form-field-infix ref
    to change size of table on screen */
 
-.example-sidenav-content {
+.mat-drawer-content-table {
     height: 50%;
     align-items: center;
     justify-content: center;
@@ -42,10 +49,6 @@
 
 
 /* mat-drawer class */
-
-.example-sidenav {
-    padding: 20px;
-}
 
 mat-form-field.mat-form-field {
     width: 105px;
@@ -62,7 +65,8 @@ mat-form-field.mat-form-field ::placeholder {
 }
 
 .header-rows {
-    width: 150%;
+    width: 100%;
+    height: 100%;
     color: #808080;
     display: flex !important;
     justify-content: center!important;
@@ -79,7 +83,10 @@ mat-form-field.mat-form-field ::placeholder {
 
 .mat-icon-input-div {
     display: flex;
-    padding: px;
+}
+
+.mat-menu-slider-div {
+    padding: 10px;
 }
 
  ::ng-deep .mat-form-field-input-btn-icon .mat-form-field-infix {
@@ -89,3 +96,6 @@ mat-form-field.mat-form-field ::placeholder {
 :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
     padding: 0px;
 }
+
+
+/* block with fit content will stretch page to max size making it responive */

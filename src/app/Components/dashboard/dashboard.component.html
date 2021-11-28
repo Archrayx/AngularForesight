@@ -1,4 +1,4 @@
-<mat-drawer-container class="example-container" style="background-color: #b2dce4;">
+<mat-drawer-container class="mat-drawer-container-div" style="background-color: #b2dce4;">
 
     <!-- Side Drawer For filter options -->
 
@@ -11,7 +11,7 @@
 
 
 
-    <mat-drawer #drawer class="example-sidenav" mode="over" style="background-color: rgb(96, 96, 107);">
+    <mat-drawer #drawer class="mat-drawer" mode="over" style="background-color: rgb(96, 96, 107);">
         <div class="search-div">
             <!-- <mat-form-field class="search-form-field" *ngFor="let item of filterSelectObj" floatLabel="never">
                 <input [(ngModel)]="item.search" matInput placeholder="Search {{item.header}}" autocomplete="off" (keyup)="filterChange(item.key,$event)">
@@ -58,7 +58,7 @@
 
 
     <!-- End of Drawer, main table area and stuff -->
-    <div class="container">
+    <div class="toolbar-container">
         <mat-toolbar class="header-rows">
             <span class="fill-remaining-space"></span>
             <span>Foresight Soccer Dashboard</span>
@@ -70,16 +70,16 @@
 
 
 
-        <div class="example-sidenav-content">
+        <div class="table-responsive mat-drawer-content-table">
 
-            <mat-table matSort [dataSource]='dataSource' class="mat-elevation-z8 demo-table">
+            <mat-table #table matSort [dataSource]='dataSource' class=" mat-elevation-z8">
 
 
                 <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
                 <ng-container *ngFor="let item of filterSelectObj; let i = index;">
                     <!-- This Ng Container is for all rows besides Result and ResultFH using index i as a column tracker-->
                     <ng-container [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2 && i != 3">
-                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
                             <!-- mat-sort-header matSort-->
                             <div>{{item.header}}</div>
                             <div>
@@ -114,11 +114,10 @@
 
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
                             <!-- mat-sort-header matSort-->
-
                             <div>
                                 <div>{{item.header}}</div>
                                 <mat-menu #aboveMenu="matMenu" yPosition="above">
-                                    <div fxLayout="column" (click)="$event.stopPropagation();">
+                                    <div class="mat-menu-slider-div" (click)="$event.stopPropagation();">
                                         <form [formGroup]="item.formGroup" appearance="outline">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Min Range:</mat-label>
@@ -203,8 +202,8 @@
                         <mat-spinner></mat-spinner>
                     </mat-footer-cell>
                 </ng-container>
-                <mat-header-row class="header-rows" *matHeaderRowDef="displayedColumns"> </mat-header-row>
-                <mat-row class="header-rows" *matRowDef='let row; let even = even; columns: displayedColumns;' [ngClass]="{gray:even}"></mat-row>
+                <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+                <mat-row *matRowDef='let row; let even = even; columns: displayedColumns;' [ngClass]="{gray:even}"></mat-row>
                 <mat-footer-row *matFooterRowDef=" [ 'loading'] " [ngClass]="{ 'hide':dataSource!=null} "></mat-footer-row>
             </mat-table>
             <mat-paginator class="header-rows" [pageSizeOptions]="[10,25,50,100,1000] " [pageSize]="25 " showFirstLastButtons></mat-paginator>
