@@ -6,7 +6,7 @@ import { AuthService } from './Services/AuthService/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'SoccerTracker';
+  title = 'Foresight Soccer';
 
   isAuthenticated = false;
 

@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
  //is Atuhenticated for Action Column
 
-  isAuthenticated = false;
+  isAuthenticated = true;
 
   /*Sets up and array of customizable entries which is used for setting up matTable headers,column rows, forms and
   any other future properties the table or component might need in regards to dataSource property matching.
@@ -207,7 +207,6 @@ export class DashboardComponent implements OnInit {
     // this.isAuthenticated = await this.authService.checkAuthenticated();
     this.checkIP();
     this.getRemoteData();
-    this.createDisplayedColumns();
     this.refresh();
   }
   //method that generates displayed columns on table which references object in filterSelectObject in constructor
@@ -216,21 +215,20 @@ export class DashboardComponent implements OnInit {
   //being generated on value change. it creates key and value on valueChange the filters accourdingly. (look at createFilter for how its filtered)
   //
   createDisplayedColumns(){
+    let tempDisplayedColumns = [];
      Object.keys(this.filterSelectObj).forEach((keys,index) =>{
        if (index == 3){
-         console.log(keys);
+        //  console.log(keys);
          this.filterSelectObj[index].form.valueChanges.subscribe((name: any) => {
            this.filterValues[this.filterSelectObj[index].key] = name
            this.dataSource.filter = JSON.stringify(this.filterValues)
          })
-        //  this.filterSelectObj[index].formGroup.get("MLMin").valueChanges.subscribe((name: any) => {
-        //    this.filterValues["MLMin"] = name
-        //    this.dataSource.filter = JSON.stringify(this.filterValues)
-        //  })
-        //  this.filterSelectObj[index].formGroup.get("MLMax").valueChanges.subscribe((name: any) => {
-        //    this.filterValues["MLMax"] = name
-        //    this.dataSource.filter = JSON.stringify(this.filterValues)
-        //  })
+         this.filterSelectObj[index].formGroup.get("MLMin").valueChanges.subscribe((name: any) => {
+           this.dataSource.filter = JSON.stringify(this.filterValues)
+         })
+         this.filterSelectObj[index].formGroup.get("MLMax").valueChanges.subscribe((name: any) => {
+           this.dataSource.filter = JSON.stringify(this.filterValues)
+         })
        }
        else{
        this.filterSelectObj[index].form.valueChanges.subscribe((name: any) => {
@@ -238,18 +236,18 @@ export class DashboardComponent implements OnInit {
          this.dataSource.filter = JSON.stringify(this.filterValues)
        })
       }
-       this.displayedColumns.push(this.filterSelectObj[index].key)
+       tempDisplayedColumns.push(this.filterSelectObj[index].key)
     })
 
-    // if(!this.isAuthenticated){
-    //   this.displayedColumns.push('Actions')};
+    if(this.isAuthenticated){
+      tempDisplayedColumns.push('Actions')};
+      this.displayedColumns = tempDisplayedColumns;
     console.log("new FilterValues:" + this.filterValues + "\nnew DisplayedColumns: " + this.displayedColumns);
   }
 
 //Calls to Assign dataSource for matTable. includes value transformations for specific columns
 getRemoteData(){
    this.service.listEntry().subscribe((x) => {
-
     //Retrieves remote data and assigns it to var remote data
      const remoteData: any[] = x;
      let tempMLArray:number[] = [];
@@ -305,6 +303,7 @@ getRemoteData(){
      this.dataSource.sort = this.sort;
      this.dataSource.paginator = this.paginator;
      this.dataSource.filterPredicate = this.createFilter();
+    this.createDisplayedColumns();
      console.log("filter Predicate Assigned")
    },
      (error) => {                              //Error callback
@@ -313,39 +312,44 @@ getRemoteData(){
        let loading = false;
       }
    );
-
 }
 
   //filter Predicate used for filtering. checks generated filterValues on valueChange to filter per Column.
   //Match Case For all columns that wish to be filtered
   createFilter() {
 
-    let filterFunction = function (data:any, filter:any): boolean
-    { let searchTerms = JSON.parse(filter);
-
+    return (data:any, filter:any): boolean =>
+    {
+       let searchTerms = JSON.parse(filter);
+      // console.log("This is MLMin in filter: ",this.filterSelectObj[3].formGroup.value.MLMin);
+      // console.log("This is MLMax in filter: ", this.filterSelectObj[3].formGroup.value.MLMax);
+      // console.log("Data Vals: ", +data["ML_Price"])
       //console.log("this is data: ",data);
       //console.log("filter is: " + filter +"\searchTerm Rep: " + searchTerms)
+      if (+data["ML_Price"] < this.filterSelectObj[3].formGroup.value.MLMin || +data["ML_Price"] > this.filterSelectObj[3].formGroup.value.MLMax) {
+        return false;
+      }
        for (var property in searchTerms)
         {
           //console.log(property);
           //console.log("has own protery:  ",searchTerms.hasOwnProperty(property), searchTerms[property]);
-         if (searchTerms.hasOwnProperty(property) && searchTerms[property] && !searchTerms.hasOwnProperty("MLMin") && !searchTerms.hasOwnProperty("MLMax")){
+          //checks for a property in search property   AND if there is a value in said filter array
+         if (searchTerms.hasOwnProperty(property) && searchTerms[property]){
 
            //first check to see if values are null or undefined if so return false for that entry
-             if (data[property] == null || data[property] == undefined) {
-               return false;
-          }
-
+             if (data[property] == null || data[property] == undefined)
+              {
+                 return false;
+              }
           //if values exist on property, then check if a match is present, which if not then return false else return true to pop item into filtered table
              if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1)
              {
                return false
-              };
+             };
             }}
           //console.log("This is a true search");
           return true;
          };
-         return filterFunction;
          }
 
 
@@ -443,3 +447,17 @@ this.dialog.open(UpdateItemComponent,{
   //   });
   //   return uniqChk;
   // }
+
+  //if range tool sliders need to be adjusted for other columns its possible by setting filter predicate with for loop to
+  //check if min and max form group exists and if it does loop through the properties of indexed form group and check
+  //if value is in between min and max form control values; e.g:
+  //  Object.keys(this.filterSelectObj).foreach((keys,index)=>{
+  //    if filterSelectObj[index].contains("formGroup"){//possibly check if value is null or undefined
+//        if (+data[filterSelectObj[index].key] < this.filterSelectObj[index].formGroup.value.Min || +data[filterSelectObj[index].key] < this.filterSelectObj[index].formGroup.value.Max) {
+//             return false;
+//          }
+  // })
+  //
+  //}
+//will also need to subscribe to form groups in displayed columns or create new function that subscribes to all formgGroups
+//in filterSelectObj formgroup control

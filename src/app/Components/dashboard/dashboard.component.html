@@ -61,7 +61,7 @@
     <div class="container">
         <mat-toolbar class="header-rows">
             <span class="fill-remaining-space"></span>
-            <span>Soccer Tracker Project</span>
+            <span>Foresight Soccer Dashboard</span>
             <span class="fill-remaining-space"></span>
             <div style="text-align:center;"><button type="button" mat-raised-button (click)="drawer.toggle()">Open Menu</button></div>
         </mat-toolbar>
@@ -111,10 +111,12 @@
 
                     <!-- This Ng Container is used for ml price filter bar in column 3, ML Price -->
                     <ng-container [matColumnDef]='item.key' *ngIf="i == 3">
+
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
                             <!-- mat-sort-header matSort-->
+
                             <div>
-                                <button [matMenuTriggerFor]="aboveMenu">{{item.header}}</button>
+                                <div>{{item.header}}</div>
                                 <mat-menu #aboveMenu="matMenu" yPosition="above">
                                     <div fxLayout="column" (click)="$event.stopPropagation();">
                                         <form [formGroup]="item.formGroup" appearance="outline">
@@ -126,20 +128,23 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Max Range:</mat-label>
-                                                <input matInput type="number" [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax">
+                                                <input matInput type="number" [value]="maxVal" [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax">
                                             </mat-form-field>
-                                            <mat-slider thumbLabel tickInterval="5" step="5" min={{MLMin}} max={{MLMax}} [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax" value={{MLMax}} aria-label="units"></mat-slider>
+                                            <mat-slider #maxVal thumbLabel tickInterval="5" step="5" min={{MLMin}} max={{MLMax}} [(ngModel)]="item.formGroup.MLMax" formControlName="MLMax" value={{MLMax}} aria-label="units"></mat-slider>
                                         </form>
-
                                     </div>
                                 </mat-menu>
                             </div>
                             <div>
-                                <mat-form-field appearance="outline">
-                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                <mat-form-field class="mat-form-field-input-btn-icon" appearance="outline">
+                                    <div class="mat-icon-input-div">
+                                        <input matInput class="mat-input-with-btn" [placeholder]="item.header" [formControl]="item.form">
+                                        <button class="mat-icon-btn" mat-icon-button color="primary" [matMenuTriggerFor]="aboveMenu"><mat-icon>more_vert</mat-icon></button>
+                                    </div>
                                 </mat-form-field>
                             </div>
                         </mat-header-cell>
+
                         <ng-container>
                             <mat-cell class="header-rows" *matCellDef='let element'>{{element[item.key]}}</mat-cell>
                         </ng-container>
@@ -181,7 +186,7 @@
 
 
 
-                <ng-container [matColumnDef]='"Actions"'>
+                <ng-container *ngIf="isAuthenticated" [matColumnDef]='"Actions"'>
                     <mat-header-cell class="header-rows" *matHeaderCellDef>
                         Actions
                     </mat-header-cell>

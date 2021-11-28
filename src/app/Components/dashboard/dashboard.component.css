@@ -76,3 +76,16 @@ mat-form-field.mat-form-field ::placeholder {
 .mat-raised-button {
     background-color: rgb(106, 209, 183);
 }
+
+.mat-icon-input-div {
+    display: flex;
+    padding: px;
+}
+
+ ::ng-deep .mat-form-field-input-btn-icon .mat-form-field-infix {
+    padding: 2px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0px;
+}
