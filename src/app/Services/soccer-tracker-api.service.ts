@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 export class SoccerTrackerApiService implements OnInit {
 
   baseUrl: string = "http://localhost:325/api/"
-  // baseUrl: string = "http://73.198.21.178:325/api/";
+  baseUrl_2: string = "http://73.198.21.178:325/api/";
   ipAddress = '';
   constructor(public http: HttpClient) { }
 

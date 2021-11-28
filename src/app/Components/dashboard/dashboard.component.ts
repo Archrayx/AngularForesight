@@ -428,7 +428,8 @@ this.dialog.open(UpdateItemComponent,{
       console.log(res.ip);
       this.service.ipAddress = res.ip;
       console.log("This is the new IPADDRESS: " + this.service.ipAddress);
-      if (this.service.ipAddress == "73.198.21.178") {
+      if (this.service.ipAddress != "73.198.21.178") {
+        this.service.baseUrl = this.service.baseUrl_2;
         console.log("local machine");
       }
     });
