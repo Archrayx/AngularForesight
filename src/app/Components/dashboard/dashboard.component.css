@@ -1,12 +1,15 @@
 /* adjust left and right position of full table compared to blue background*/
 
 .mat-drawer-container-div {
-    display: block;
-    padding: 20px;
     width: 100%;
     height: 100%;
     border: 1px solid rgba(0, 0, 0, 0.5);
     -webkit-box-align: start;
+}
+
+.mat-drawer-content {
+    display: inline-block;
+    padding: 20px;
 }
 
 .mat-drawer {
@@ -15,7 +18,6 @@
 
 .toolbar-container {
     display: block;
-    max-width: fit-content;
 }
 
 
