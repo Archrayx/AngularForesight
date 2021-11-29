@@ -29,3 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 Need to create an opening box
 options:expansion panel, dialog box, slider with custom thumbnail, menu above
+
+
+on create of new add checkmark that signifies if row is a tounanment game(orange color), else no color, checkmark under team to signify if there was a blue card final score blue as well.
+

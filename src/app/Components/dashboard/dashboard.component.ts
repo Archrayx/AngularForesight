@@ -1,5 +1,5 @@
 import { SoccerModel } from '../../Classes/soccer-model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { SoccerTrackerApiService } from '../../Services/soccer-tracker-api.service';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,8 +12,11 @@ import { MatTableFilter } from 'mat-table-filter';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common'
 import { AuthService } from 'src/app/Services/AuthService/auth.service';
+import {map, startWith} from 'rxjs/operators';
 
 
+const CACHE_KEY = "dashboard_key";
+const CACHE_KEY_TABLE = "table_key";
 
 @Component({
   selector: 'app-home-page',
@@ -29,6 +32,7 @@ export class DashboardComponent implements OnInit {
 
 
   //data source for mat-table
+  repo: any;
   dataSource : any;
   displayedColumns:any[] = [];
   filterSelectObj : any[];
@@ -46,7 +50,6 @@ export class DashboardComponent implements OnInit {
    and filter list options by unique value( currently disable at the bottom of this file) */
   constructor(public authService: AuthService,public service: SoccerTrackerApiService, public dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef, private datePipe : DatePipe) {
 
-    // this.authService.isAuthenticated.subscribe(
     //   (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
     // );
 
@@ -204,8 +207,9 @@ export class DashboardComponent implements OnInit {
 
   //calls generate and createDisplayedColumns method
   async ngOnInit(): Promise<void> {
+
     // this.isAuthenticated = await this.authService.checkAuthenticated();
-    this.checkIP();
+    //this.checkIP();
     this.getRemoteData();
     this.refresh();
   }
@@ -214,11 +218,15 @@ export class DashboardComponent implements OnInit {
   //also since this is used onInit, it calls the filter method of dataSource which it uses based on filterValues array
   //being generated on value change. it creates key and value on valueChange the filters accourdingly. (look at createFilter for how its filtered)
   //
-  createDisplayedColumns(){
+
+
+
+  async createDisplayedColumns(){
+    console.log("assigning columns...");
     let tempDisplayedColumns = [];
      Object.keys(this.filterSelectObj).forEach((keys,index) =>{
        if (index == 3){
-        //  console.log(keys);
+        //  //console.log(keys);
          this.filterSelectObj[index].form.valueChanges.subscribe((name: any) => {
            this.filterValues[this.filterSelectObj[index].key] = name
            this.dataSource.filter = JSON.stringify(this.filterValues)
@@ -238,119 +246,45 @@ export class DashboardComponent implements OnInit {
       }
        tempDisplayedColumns.push(this.filterSelectObj[index].key)
     })
-
     if(this.isAuthenticated){
       tempDisplayedColumns.push('Actions')};
       this.displayedColumns = tempDisplayedColumns;
-    console.log("new FilterValues:" + this.filterValues + "\nnew DisplayedColumns: " + this.displayedColumns);
+    ////console.log("new FilterValues:" + this.filterValues + "\nnew DisplayedColumns: " + this.displayedColumns);
+    console.log("done assigning columns...");
   }
 
 //Calls to Assign dataSource for matTable. includes value transformations for specific columns
-getRemoteData(){
-   this.service.listEntry().subscribe((x) => {
-    //Retrieves remote data and assigns it to var remote data
-     const remoteData: any[] = x;
-     let tempMLArray:number[] = [];
-    //when objects are recieved, transformation are done to the data of ACR, Price_Delta, and Date using foreach item in remoteData
-    //this allows proper string representation to be shown on table
-     Object.keys(remoteData).forEach((key,index) =>{
-       //Data Manipulations Area with if statements before inserting into table columns
-       if (remoteData[index].ML_Price != null) {
+async getRemoteData(){
+  if(localStorage[CACHE_KEY] == undefined){
+    const itemVal = new BehaviorSubject(localStorage.getItem(CACHE_KEY));
 
-         tempMLArray.push(+remoteData[index].ML_Price);
+    itemVal.subscribe((x:any)=>{
+      console.log("using Cache");
+      this.assignMatTableProperties(JSON.parse(x));
+      this.createDisplayedColumns();
+    });
 
-       }
-
-       if (remoteData[index].Price_Delta != null){
-
-         remoteData[index].Price_Delta = (((remoteData[index].Price_Delta) * 100).toFixed(2)).toString() + "%";
-     }
-     //
-       if (remoteData[index].ACR != null){
-       remoteData[index].ACR =  (((remoteData[index].ACR) * 100).toFixed(2)).toString() + "%";
-       }
-       if (remoteData[index].Date != null) {
-
-         remoteData[index].Date = this.datePipe.transform(remoteData[index].Date, 'MM/dd/yyyy');
-
-       }
-       if (remoteData[index].Result != null) {
-         remoteData[index].resultColor = this.colorPallete(remoteData[index].Result);
-       }
-       if (remoteData[index].First_Half_Result != null) {
-
-         //remoteData[index].First_Half_Result = remoteData[index].First_Half_Result.length;
-         remoteData[index].resultColorFH = this.colorPallete(remoteData[index].First_Half_Result);
-       }
-       if (remoteData[index].Possession != null) {
-
-         remoteData[index].Possession = (((remoteData[index].Possession) * 100).toFixed(0)).toString() + "%";
-       }
-    }
-     )
-//console.log(remoteData);
-    //sets dataSource var as matTableDataSource to be used for mat table
-    //commented out call to get filter objects is disabled for feature use with entry listing if need
-    //sets filter predicate function return by createFilter method (dug deep on github repo comments for it)
-     console.log('remoteData Saved');
-     console.log("ML ARRAY:  ", this.MLArray);
-     this.MLArray = tempMLArray;
-     this.MLMax = Math.max(...tempMLArray);
-     this.filterSelectObj[3].formGroup.get("MLMax").setValue(this.MLMax);
-     this.MLMin = Math.min(...tempMLArray);
-     this.filterSelectObj[3].formGroup.get("MLMin").setValue(this.MLMin);
-     this.dataSource = new MatTableDataSource(remoteData);
-     this.dataSource.sort = this.sort;
-     this.dataSource.paginator = this.paginator;
-     this.dataSource.filterPredicate = this.createFilter();
-    this.createDisplayedColumns();
-     console.log("filter Predicate Assigned")
-   },
-     (error) => {                              //Error callback
+  }
+   else {
+     this.repo = this.service.listEntry();
+     this.repo.subscribe((x: any) => {
+      console.log("still using subscribe");
+      //local cache storage
+      //Retrieves remote data and assigns it to var remote data
+      this.dataManipulate(x);
+      this.createDisplayedColumns();
+      //console.log("filter Predicate Assigned")
+    },
+     (error:any) => {                              //Error callback
        console.error('error caught in component')
        let errorMessage = error;
        let loading = false;
       }
-   );
+   );}
 }
 
   //filter Predicate used for filtering. checks generated filterValues on valueChange to filter per Column.
   //Match Case For all columns that wish to be filtered
-  createFilter() {
-
-    return (data:any, filter:any): boolean =>
-    {
-       let searchTerms = JSON.parse(filter);
-      // console.log("This is MLMin in filter: ",this.filterSelectObj[3].formGroup.value.MLMin);
-      // console.log("This is MLMax in filter: ", this.filterSelectObj[3].formGroup.value.MLMax);
-      // console.log("Data Vals: ", +data["ML_Price"])
-      //console.log("this is data: ",data);
-      //console.log("filter is: " + filter +"\searchTerm Rep: " + searchTerms)
-      if (+data["ML_Price"] < this.filterSelectObj[3].formGroup.value.MLMin || +data["ML_Price"] > this.filterSelectObj[3].formGroup.value.MLMax) {
-        return false;
-      }
-       for (var property in searchTerms)
-        {
-          //console.log(property);
-          //console.log("has own protery:  ",searchTerms.hasOwnProperty(property), searchTerms[property]);
-          //checks for a property in search property   AND if there is a value in said filter array
-         if (searchTerms.hasOwnProperty(property) && searchTerms[property]){
-
-           //first check to see if values are null or undefined if so return false for that entry
-             if (data[property] == null || data[property] == undefined)
-              {
-                 return false;
-              }
-          //if values exist on property, then check if a match is present, which if not then return false else return true to pop item into filtered table
-             if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1)
-             {
-               return false
-             };
-            }}
-          //console.log("This is a true search");
-          return true;
-         };
-         }
 
 
   //Resets filterValue Array as a command that can be called (onClick) in the DOM
@@ -366,10 +300,9 @@ getRemoteData(){
   //also calls dropdown confirm dialog for double confirmation
   deleteEntry(id:any){
     if(confirm("Are you Sure You Want To Delete Entry " + id )){
-      console.log(id.id)
+      //console.log(id.id)
     this.service.delete(id.id);
     }
-
   }
 
   //opens angular material dialog which is routed to the AddItemComponet with config for window size
@@ -386,19 +319,17 @@ getRemoteData(){
   //single parameter is the item row that was requested to be updated which fills in formGroup properties
   //with formControl entries matching that of the items row properties. (check updateItemComponent to see how its done)
   openDialogUpdate(item:any){
-    console.log(item)
+    //console.log(item)
     Object.keys(this.service.form.controls).forEach((key, index) => {
-      console.log("Key: " + key + "\nindex: " + index)
+      //console.log("Key: " + key + "\nindex: " + index)
       this.service.form.patchValue({ [key]: item[key] })
-      console.log(item[key]);
+      //console.log(item[key]);
     })
-
-
-this.dialog.open(UpdateItemComponent,{
-  height:'auto',
-  width:'60%',
-  data:this.service.form
-})
+    this.dialog.open(UpdateItemComponent,{
+      height:'auto',
+      width:'60%',
+      data:this.service.form
+    })
   }
 
     //function used to assign color variable to both result and result FH dataSource columns
@@ -422,17 +353,117 @@ this.dialog.open(UpdateItemComponent,{
     this.getRemoteData();
     this.changeDetectorRefs.detectChanges();
   }
-  checkIP() {
 
+  dataManipulate(x:any){
+    const remoteData: any[] = x;
+    let tempMLArray: number[] = [];
+    //when objects are recieved, transformation are done to the data of ACR, Price_Delta, and Date using foreach item in remoteData
+    //this allows proper string representation to be shown on table
+    Object.keys(remoteData).forEach((key, index) => {
+      //Data Manipulations Area with if statements before inserting into table columns
+      if (remoteData[index].ML_Price != null) {
+
+        tempMLArray.push(+remoteData[index].ML_Price);
+
+      }
+
+      if (remoteData[index].Price_Delta != null) {
+
+        remoteData[index].Price_Delta = (((remoteData[index].Price_Delta) * 100).toFixed(2)).toString() + "%";
+      }
+      //
+      if (remoteData[index].ACR != null) {
+        remoteData[index].ACR = (((remoteData[index].ACR) * 100).toFixed(2)).toString() + "%";
+      }
+      if (remoteData[index].Date != null) {
+
+        remoteData[index].Date = this.datePipe.transform(remoteData[index].Date, 'MM/dd/yyyy');
+
+      }
+      if (remoteData[index].Result != null) {
+        remoteData[index].resultColor = this.colorPallete(remoteData[index].Result);
+      }
+      if (remoteData[index].First_Half_Result != null) {
+
+
+        remoteData[index].resultColorFH = this.colorPallete(remoteData[index].First_Half_Result);
+      }
+      if (remoteData[index].Possession != null) {
+
+        remoteData[index].Possession = (((remoteData[index].Possession) * 100).toFixed(0)).toString() + "%";
+      }
+    }
+    )
+    ////console.log(remoteData);
+    //sets dataSource var as matTableDataSource to be used for mat table
+    //commented out call to get filter objects is disabled for feature use with entry listing if need
+    //sets filter predicate function return by createFilter method (dug deep on github repo comments for it)
+    //console.log('remoteData Saved');
+    //console.log("ML ARRAY:  ", this.MLArray);
+    this.MLArray = tempMLArray;
+    localStorage.setItem(CACHE_KEY,JSON.stringify(remoteData));
+    this.assignMatTableProperties(remoteData);
+
+
+
+  }
+
+   async assignMatTableProperties(remoteData:any){
+    console.log("assigning Table Properties...");
+    this.MLMax = Math.max(...this.MLArray);
+    this.filterSelectObj[3].formGroup.get("MLMax").setValue(this.MLMax);
+    this.MLMin = Math.min(...this.MLArray);
+    this.filterSelectObj[3].formGroup.get("MLMin").setValue(this.MLMin);
+    this.dataSource = new MatTableDataSource(remoteData);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = this.createFilter();
+    console.log("done Assigning table Properties...");
+    // localStorage[CACHE_KEY_TABLE] = this.dataSource;
+  }
+
+  checkIP() {
     this.service.http.get("http://api.ipify.org/?format=json").subscribe((res: any) => {
-      console.log(res.ip);
+      //console.log(res.ip);
       this.service.ipAddress = res.ip;
-      console.log("This is the new IPADDRESS: " + this.service.ipAddress);
+      //console.log("This is the new IPADDRESS: " + this.service.ipAddress);
       if (this.service.ipAddress != "73.198.21.178") {
         this.service.baseUrl = this.service.baseUrl_2;
-        console.log("local machine");
+        //console.log("local machine");
       }
     });
+  }
+
+  createFilter() {
+    return (data: any, filter: any): boolean => {
+      let searchTerms = JSON.parse(filter);
+      // //console.log("This is MLMin in filter: ",this.filterSelectObj[3].formGroup.value.MLMin);
+      // //console.log("This is MLMax in filter: ", this.filterSelectObj[3].formGroup.value.MLMax);
+      // //console.log("Data Vals: ", +data["ML_Price"])
+      ////console.log("this is data: ",data);
+      ////console.log("filter is: " + filter +"\searchTerm Rep: " + searchTerms)
+      if (+data["ML_Price"] < this.filterSelectObj[3].formGroup.value.MLMin || +data["ML_Price"] > this.filterSelectObj[3].formGroup.value.MLMax) {
+        return false;
+      }
+      for (var property in searchTerms) {
+        ////console.log(property);
+        ////console.log("has own protery:  ",searchTerms.hasOwnProperty(property), searchTerms[property]);
+        //checks for a property in search property   AND if there is a value in said filter array
+        if (searchTerms.hasOwnProperty(property) && searchTerms[property]) {
+
+          //first check to see if values are null or undefined if so return false for that entry
+          if (data[property] == null || data[property] == undefined) {
+            return false;
+          }
+          //if values exist on property, then check if a match is present, which if not then return false else return true to pop item into filtered table
+          if (data[property].toString().toLowerCase().indexOf(searchTerms[property].toString().toLowerCase()) === -1) {
+            return false
+          };
+        }
+      }
+      ////console.log("This is a true search");
+      return true;
+    };
   }
 }
 
