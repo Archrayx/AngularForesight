@@ -1,17 +1,19 @@
 import { Injectable, OnInit,  } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class SoccerTrackerApiService implements OnInit {
+  private subject = new BehaviorSubject([]);
+  remoteData$ = this.subject.asObservable();
 
   baseUrl: string = "http://localhost:325/api/"
   baseUrl_2: string = "http://73.198.21.178:325/api/";
   ipAddress = '';
-  constructor(public http: HttpClient) { }
+
 
   form:FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -63,6 +65,9 @@ export class SoccerTrackerApiService implements OnInit {
     });
 
   }
+  constructor(public http: HttpClient) {
+  this.loadAllEntry();
+   }
   ngOnInit() {
 
 
@@ -78,7 +83,31 @@ export class SoccerTrackerApiService implements OnInit {
       console.error(err);
       //Handle the error here
       return throwError(error);    //Rethrow it back to component
-    }))
+    }),
+    tap((x:any)=>{
+      console.log("it did something...")
+      this.subject.next(x)
+    })
+    );
+  }
+
+  private loadAllEntry(){
+    const loadCourses$ = this.http.get(this.baseUrl + "allsoccerTrackers").pipe(catchError((err) => {
+      const error = new Error(err);
+      throwError(() => { error })
+      console.log('error caught in service')
+      console.error(err);
+      //Handle the error here
+      return throwError(error);    //Rethrow it back to component
+    }),
+      tap((x: any) => {
+
+        console.log("it did something...")
+        this.subject.next(x)
+      })
+    );
+
+    loadCourses$.subscribe();
   }
 
   //create new item
