@@ -1,4 +1,4 @@
-import { SoccerTrackerApiService } from './Services/soccer-tracker-api.service';
+import { SoccerTrackerApiService } from './Services/SoccerTrackerApi/soccer-tracker-api.service';
 import { Component } from '@angular/core';
 import { AuthService } from './Services/AuthService/auth.service';
 import { startWith } from 'rxjs/operators';

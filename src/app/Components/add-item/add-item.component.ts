@@ -1,5 +1,5 @@
 import { SnackbarService } from './../../Services/snackbar.service';
-import { SoccerTrackerApiService } from './../../Services/soccer-tracker-api.service';
+import { SoccerTrackerApiService } from '../../Services/SoccerTrackerApi/soccer-tracker-api.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
