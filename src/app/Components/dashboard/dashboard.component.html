@@ -78,13 +78,14 @@
 
 
                 <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
-                <ng-container *ngFor="let item of filterSelectObj; let i = index;">
+                <ng-container class="ng-column-containers" *ngFor="let item of filterSelectObj; let i = index;">
                     <!-- This Ng Container is for all rows besides Result and ResultFH using index i as a column tracker-->
-                    <ng-container [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2 && i != 3">
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2 && i != 3">
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
+                            <br>
                             <!-- mat-sort-header matSort-->
-                            <div>{{item.header}}</div>
-                            <div>
+                            <div class="mat-label-input">
+                                <mat-label class="item-header">{{item.header}}</mat-label>
                                 <mat-form-field appearance="outline">
                                     <input matInput [placeholder]="item.header" [formControl]="item.form">
                                 </mat-form-field>
