@@ -142,9 +142,16 @@ export class DashboardComponent implements OnInit {
   dataManipulate(x: any) {
     const remoteData: any[] = x;
     let tempMLArray: number[] = [];
+    let vals = ['T', 'F'];
+
     //when objects are recieved, transformation are done to the data of ACR, Price_Delta, and Date using foreach item in remoteData
     //this allows proper string representation to be shown on table
     Object.keys(remoteData).forEach((key, index) => {
+      let TF = {
+        TournamentGameColor: vals[Math.floor(Math.random() * vals.length)],
+        RedCard: vals[Math.floor(Math.random() * vals.length)],
+      };
+      console.log(TF.TournamentGameColor);
       //Data Manipulations Area with if statements before inserting into table columns
       if (remoteData[index].ML_Price != null) {
         tempMLArray.push(+remoteData[index].ML_Price);
@@ -176,10 +183,24 @@ export class DashboardComponent implements OnInit {
         );
       }
 
-      if (remoteData[index].Tournament_Game != null) {
-        remoteData[index].Team_Color = this.colorPalletes.teamColorPallete(
-          remoteData[index].Tournament_Game
+      if (remoteData[index].Tournament_Game == null) {
+        remoteData[index].Team1GameColor = this.colorPalletes.teamColorPallete(
+          TF
+          //remoteData[index].Tournament_Game
         );
+      }
+      if (remoteData[index].Tournament_Game == null) {
+        remoteData[index].Team2GameColor = this.colorPalletes.teamColorPallete(
+          TF
+          //remoteData[index].Tournament_Game
+        );
+      }
+      if (remoteData[index].RedCard == null) {
+        remoteData[index].FinalScoreColor =
+          this.colorPalletes.finalScoreColorPallete(
+            TF
+            //remoteData[index].Tournament_Game
+          );
       }
       if (remoteData[index].Possession != null) {
         remoteData[index].Possession =

@@ -80,7 +80,7 @@
                 <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
                 <ng-container class="ng-column-containers" *ngFor="let item of filterSelectObj; let i = index;">
                     <!-- This Ng Container is for all rows besides Result and ResultFH using index i as a column tracker-->
-                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i != 2 && i != 3">
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i != 6 && i != 7 && i!= 8 && i != 2 && i != 3 && i != 0 && i !=1">
                         <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
                             <br>
                             <!-- mat-sort-header matSort-->
@@ -95,6 +95,41 @@
                             <mat-cell *matCellDef='let element'>{{element[item.key]}}</mat-cell>
                         </ng-container>
                     </ng-container>
+
+                    <!-- Team 1 Column Container -->
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i == 0">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
+                            <br>
+                            <!-- mat-sort-header matSort-->
+                            <div class="mat-label-input">
+                                <mat-label class="item-header">{{item.header}}</mat-label>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell *matCellDef='let element' [style.background-color]="element.Team1GameColor">{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- Team 2 Column Container -->
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i == 1">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
+                            <br>
+                            <!-- mat-sort-header matSort-->
+                            <div class="mat-label-input">
+                                <mat-label class="item-header">{{item.header}}</mat-label>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell *matCellDef='let element' [style.background-color]="element.Team2GameColor">{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
+
 
                     <!-- This Ng Container is used for date pip in column 2, Dates -->
                     <ng-container [matColumnDef]='item.key' *ngIf="i == 2">
@@ -183,7 +218,25 @@
                             <mat-cell class="header-rows" *matCellDef='let element' [style.background-color]="element.resultColorFH">{{element[item.key]}}</mat-cell>
                         </ng-container>
                     </ng-container>
+
+                    <!-- contiainer for column 8 Final Score -->
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i == 8">
+                        <mat-header-cell [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never" class="th">
+                            <br>
+                            <!-- mat-sort-header matSort-->
+                            <div class="mat-label-input">
+                                <mat-label class="item-header">{{item.header}}</mat-label>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [placeholder]="item.header" [formControl]="item.form">
+                                </mat-form-field>
+                            </div>
+                        </mat-header-cell>
+                        <ng-container>
+                            <mat-cell *matCellDef='let element' [style.background-color]="element.FinalScoreColor">{{element[item.key]}}</mat-cell>
+                        </ng-container>
+                    </ng-container>
                 </ng-container>
+
 
 
 
