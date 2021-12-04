@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
   //is Atuhenticated for Action Column
 
-  isAuthenticated = false;
+  isAuthenticated = true;
 
   /*Sets up and array of customizable entries which is used for setting up matTable headers,column rows, forms and
   any other future properties the table or component might need in regards to dataSource property matching.
