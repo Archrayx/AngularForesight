@@ -16,13 +16,11 @@ export class SoccerTrackerApiService implements OnInit {
   ipAddress = '';
   form: any;
 
-  constructor(
-    public http: HttpClient,
-    private ApiFormGroup: FormGroupService
-  ) {}
+  constructor(public http: HttpClient, private ApiFormGroup: FormGroupService) {
+    this.form = this.ApiFormGroup.newFormGroup();
+  }
   ngOnInit() {
     this.loadAllEntry();
-    this.form = this.ApiFormGroup.newFormGroup();
   }
 
   private loadAllEntry() {

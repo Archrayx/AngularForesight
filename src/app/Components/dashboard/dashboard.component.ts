@@ -268,7 +268,7 @@ export class DashboardComponent implements OnInit {
     Object.keys(this.service.form.controls).forEach((key, index) => {
       //console.log("Key: " + key + "\nindex: " + index)
       this.service.form.patchValue({ [key]: item[key] });
-      //console.log(item[key]);
+      console.log(item[key]);
     });
     this.dialog.open(UpdateItemComponent, {
       height: 'auto',
