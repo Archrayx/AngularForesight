@@ -236,8 +236,10 @@ export class DashboardComponent implements OnInit {
   resetFilters() {
     this.filterValues = {};
     this.filterSelectObj.forEach((value, key) => {
-      value.modelValue = undefined;
+      value.form.reset();
     });
+    this.filterSelectObj[3].formGroup.get('MLMax').setValue(this.MLMax);
+    this.filterSelectObj[3].formGroup.get('MLMin').setValue(this.MLMin);
     this.dataSource.filter = '';
   }
 
