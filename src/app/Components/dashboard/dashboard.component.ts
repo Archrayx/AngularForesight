@@ -55,15 +55,14 @@ export class DashboardComponent implements OnInit {
     private dashboardController: DashboardControllerService,
     private colorPalletes: ColorPalleteService
   ) {
+    this.filterSelectObj = this.dashboardController.filterObjGenerate();
     //   (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
     // );
-
-    this.filterSelectObj = dashboardController.filterObjGenerate();
-    this.getRemoteData();
   }
 
   //calls generate and createDisplayedColumns method
   async ngOnInit() {
+    this.getRemoteData();
     this.refresh();
     // this.isAuthenticated = await this.authService.checkAuthenticated();
     //this.checkIP();
