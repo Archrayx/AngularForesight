@@ -1,0 +1,14 @@
+import new data
+add all columns as options
+search team by first letter then remaining 
+implied probability calulation difference - later
+date column colors for cl or T games 
+price delta color by threshold percent
+1 2 3 for red card 
+
+primitive analytics
+outline of wolf
+
+give user a key,
+make the api call only with token. track calls with key and token
+only 2 devices logged in at a time two different ips

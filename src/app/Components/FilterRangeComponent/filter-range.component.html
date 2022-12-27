@@ -1,0 +1,23 @@
+<div style="margin-top: 15px;">
+  <button class="mat-icon-btn" mat-raised-button color="primary" (click)="setMinMax(3)" [matMenuTriggerFor]="aboveMenu"><mat-icon class="icon" [inline]="true">more_vert</mat-icon>ML Price</button>
+  <button class="mat-icon-btn" mat-raised-button color="primary" (click)="setMinMax(4)" [matMenuTriggerFor]="aboveMenu"><mat-icon class="icon" [inline]="true">more_vert</mat-icon>K.O Price</button>
+</div>
+<mat-dialog-content >
+  <mat-menu #aboveMenu="matMenu" yPosition="above">
+    <div class="mat-menu-slider-div" (click)="$event.stopPropagation();">
+        <form *ngIf="currentFilterItem != undefined" [formGroup]="currentFilterItem?.RangeForm" appearance="outline">
+            <mat-form-field appearance="outline">
+                <mat-label>Min Range:</mat-label>
+                <input matInput type="number" [value]="minVal" [(ngModel)]="currentFilterItem?.RangeForm.value.Min" formControlName="Min">
+            </mat-form-field>
+            <mat-slider #minVal thumbLabel tickInterval="5" step="5" min={{Min}} max={{Max}} formControlName="Min" [(ngModel)]="currentFilterItem?.RangeForm.value.Min" value={{Min}} aria-label="units"></mat-slider>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Max Range:</mat-label>
+                <input matInput type="number" [value]="maxVal" [(ngModel)]="filterItems[3].RangeForm.value.Max" formControlName="Max">
+            </mat-form-field>
+            <mat-slider #maxVal thumbLabel tickInterval="5" step="5" min={{Min}} max={{Max}} formControlName="Max" [(ngModel)]="currentFilterItem?.RangeForm.value.Max" value={{Max}} aria-label="units"></mat-slider>
+        </form>
+    </div>
+</mat-menu>
+</mat-dialog-content>

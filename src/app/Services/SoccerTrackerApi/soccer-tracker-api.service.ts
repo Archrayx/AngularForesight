@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { FormGroupService } from './formGroup.service';
+import { SoccerModel } from 'src/app/Classes/soccer-model';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,10 +12,10 @@ export class SoccerTrackerApiService implements OnInit {
   private subject = new BehaviorSubject([]);
   remoteData$ = this.subject.asObservable();
 
-  baseUrl: string = 'http://localhost:325/api/';
+  baseUrl: string = 'https://localhost:7073/api/';
   baseUrl_2: string = 'http://73.198.21.178:325/api/';
   ipAddress = '';
-  form: any;
+  form: FormGroup;
 
   constructor(public http: HttpClient, private ApiFormGroup: FormGroupService) {
     this.form = this.ApiFormGroup.newFormGroup();
@@ -24,7 +25,7 @@ export class SoccerTrackerApiService implements OnInit {
   }
 
   private loadAllEntry() {
-    const loadCourses$ = this.http.get(this.baseUrl + 'allsoccerTrackers').pipe(
+    const loadCourses$ = this.http.get<SoccerModel[]>(this.baseUrl + 'allSoccerTrackers').pipe(
       catchError((err) => {
         const error = new Error(err);
         throwError(() => {
@@ -36,7 +37,6 @@ export class SoccerTrackerApiService implements OnInit {
         return throwError(error); //Rethrow it back to component
       }),
       tap((x: any) => {
-        console.log('it did something...');
         this.subject.next(x);
       })
     );
@@ -44,8 +44,8 @@ export class SoccerTrackerApiService implements OnInit {
     loadCourses$.subscribe();
   }
 
-  listEntry(): Observable<any> {
-    return this.http.get(this.baseUrl + 'allsoccerTrackers').pipe(
+  listEntry(): Observable<SoccerModel[]> {
+    return this.http.get<SoccerModel[]>(this.baseUrl + 'allSoccerTrackers').pipe(
       catchError((err) => {
         const error = new Error(err);
         throwError(() => {
@@ -64,30 +64,30 @@ export class SoccerTrackerApiService implements OnInit {
   }
 
   //create new item
-  getEntry(id: any): any {
-    return this.http.get(`${this.baseUrl}SoccerTracker/${id}`);
+  getEntry(id: number): Observable<SoccerModel> {
+    return this.http.get<SoccerModel>(`${this.baseUrl}SoccerTracker/${id}`);
   }
 
-  create(data: any): void {
+  create(data: SoccerModel): void {
     this.http
-      .post(`${this.baseUrl}addsoccerTracker`, data)
+      .post(`${this.baseUrl}addSoccerTracker`, data)
       .subscribe((data) => {
         console.log(data);
       });
   }
 
-  update(id: any, data: any): void {
+  update(id: number, data: any): void {
     this.http
-      .put(`${this.baseUrl}updatesoccerTracker/${id}`, data)
+      .put(`${this.baseUrl}updateSoccerTracker/${id}`, data)
       .subscribe((data) => {
         console.log(data);
       });
   }
 
-  delete(id: any): void {
+  delete(id: number): void {
     console.log(this.baseUrl + 'api/deletequote/' + id);
     this.http
-      .delete(`${this.baseUrl}deletesoccerTracker/${id}`)
+      .delete(`${this.baseUrl}deleteSoccerTracker/${id}`)
       .subscribe((data) => {
         console.log(data);
       });

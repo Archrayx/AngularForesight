@@ -1,0 +1,41 @@
+/*div class for main form*/
+
+form .normal-form {
+    margin: 10px;
+}
+
+
+/* padding for left tile */
+
+.controles-container {
+    padding: 3%;
+}
+
+
+/*div for all three tiles and items inside*/
+
+.controles-container>* {
+    width: 80%;
+    height: 20%;
+}
+
+
+/* radio button yes no left move */
+
+mat-radio-group mat-radio-button {
+    margin-left: 5px;
+}
+
+
+/* checkbox padding beteen team 1 and team 2 */
+
+mat-checkbox {
+    padding: 10px;
+}
+
+
+/* space between buttons submit clear and close */
+
+.button-row button {
+    margin: 5px;
+}

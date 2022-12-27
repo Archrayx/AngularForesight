@@ -1,0 +1,172 @@
+/* adjust left and right position of full table compared to blue background*/
+
+.mat-drawer-container-div {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -webkit-box-align: start;
+}
+
+.mat-drawer {
+    padding: 20px;
+}
+
+.toolbar-container {
+    display: block;
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+    position: relative;
+}
+
+.mat-drawer-content {
+    display: block;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+mat-header-row {
+    align-items: flex-end;
+}
+
+.header-cell {
+    display: flex;
+    padding-right: 0;
+    padding-left: 0;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+::ng-deep .header-label {
+    width: auto;
+    line-height: normal;
+    display: flex;
+    font-size: .8vw;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+/* icon button of ml Price Header Box */
+
+:host ::ng-deep .mat-icon {
+    font-size: 1.25vw;
+}
+
+:host ::ng-deep .mat-icon-btn {}
+
+
+/* header form field css start*/
+
+::ng-deep .header-form-field .mat-form-field-wrapper {
+    margin: 1.25px !important;
+}
+
+.header-form-field.mat-form-field {
+    /* color: white; */
+}
+
+
+/* header form field place holder text */
+
+.header-form-field.mat-form-field ::placeholder {
+    font-size: .5vw;
+    color: #808080;
+    text-align: left;
+}
+
+
+/*header form field dimensions of inside dimensions */
+
+::ng-deep .header-form-field .mat-form-field-infix {
+    width: auto !important;
+    padding: .5em .05em .5em 3px;
+    border: 0;
+}
+
+
+/* removes auto padding of inside formfield box */
+
+:host ::ng-deep .header-form-field .mat-form-field-flex {
+    padding: 0px;
+}
+
+
+/* all cells of entries */
+
+.cell {
+    font-size: .8vw;
+    color: #808080;
+    display: flex !important;
+    justify-content: center!important;
+    padding: 3px;
+}
+
+::ng-deep .mat-form-field-input-btn-icon .mat-form-field-infix {
+    padding: 2px;
+}
+
+
+/* inside mat menu */
+
+.mat-menu-slider-div {
+    padding: 10px;
+}
+
+
+/* span in mat toolbar */
+
+
+/* hide class for footer loading */
+
+.hide {
+    display: none;
+}
+
+
+/* mat drawer container class, keep same*/
+
+
+/* main scalable page content container
+   change size of mat-form-field-infix ref
+   to change size of table on screen */
+
+.mat-drawer-content-table {
+    align-items: center;
+    justify-content: center;
+}
+
+.paginator {
+    width: 100%;
+    height: 100%;
+    color: #808080;
+    display: flex !important;
+    justify-content: center!important;
+    padding: 3px;
+}
+
+
+/* mat-drawer class */
+
+.gray {
+    background-color: #f5f5f5;
+}
+
+.mat-raised-button {
+    background-color: rgb(106, 209, 183);
+}
+
+.table-header {
+    background-color: #3f51b5;
+    color: white;
+  }
+  
+  .table-cell {
+    background-color: #fafafa;
+  }
+  

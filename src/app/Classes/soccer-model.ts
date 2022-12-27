@@ -1,21 +1,31 @@
-export class SoccerModel {
-  id!: Number;
-  Team_1!: string;
-  Team_2!: string;
-  Date!: Date;
-  ML_Price!: Number;
-  C_205!: Number;
- Price_Delta!: Number;
- Result!: string;
- First_Half_Result!: string;
- Final_Score!: string;
-  Shots!: Number;
- SOG!: Number;
-  Dangerous_Attacks!: Number;
- Attacks!: Number;
- ACR!: Number;
- Possession!: Number;
-  Card_Count!: Number;
- Score_First___Yes_No_!: string;
-
+export interface SoccerModel {
+  [key: string] : any
+  id: Number;
+  team1: string;
+  team2: string;
+  date: string | null;
+  mlPrice: Number;
+  _205: Number;
+  priceDelta : number;
+  column1 : number;
+  priceDelta1: string;
+  result: string;
+  firstHalfResult: string;
+  finalScore: string;
+  shots: Number;
+  sog: Number;
+  dangerousAttacks: Number;
+  attacks: Number;
+  acr: string;
+  possession: string;
+  cardCount: Number;
+  scoreFirstYN: string;
+  leagueTournament: string;
+  redCardYN: string;
+  clw: string;
+  FinalScoreColor : any;
+  Team1GameColor: any;
+  Team2GameColor: any;
+  resultColorFH:any;
+  resultColor:any;
 }

@@ -1,0 +1,34 @@
+Progress:
+    1.) Currently I have made a good amount of improvements with creating classes and interfaces to give objects specific typings.
+    for example some the major ones include giving the filter select object a typing of an array of filterItems; e.g FilterItems[]
+    another is giving the exact model for the observable object of the get request.
+    2.) almost all areas where it references type any has been changed. *ALMOST ALL*
+    3.) another major change is changing the location of the range filter for MLPrice. it is now in the side nav menu
+    4.) to see the majority of changes made, you can view the next commit i push in the repo. this will be in a new branch
+        hopefully to keep track more properly and not have it conflict with master branch.
+    5.) another small but notable feature that was included was the gif home screen display
+
+Tasks:
+    1.) Currently I need to implement another component that has two way databinding so that data binds to a menu for filtering ranges
+        instead of it being a single range select for ml price. I need to write down what those ranges are again but it will be under
+        this bullet point
+    2.) right now there are a lot of naming conventions I am not satisfied with. to keep it consistent i will need to workshop naming
+        schemas, conventions, and patterns in order to have a better recognition of what code does and what its referencing.
+    3.) The DashBoardComponent has a lot of methods that I do not believe should be populated in this file. instead I would rather
+        build a service that would perform most of the data manipulation and mat table data source inputing initializing.
+    4.) I would really like to figure out how I can get the login situated. I can either use a third party source to keep track
+        of logins or i could create a database table to keep track of users with password and usernames, maybe even emails and
+        payment methods for the service
+    5.) Currently the columns have colorization patterns that are random. specifically team 1, team 2, and final score columns.
+        its already set up with a service to determine what colors we will use but not exactly the condition statements to change
+        the colors exactly as they should be. also this will include color pattern for date table. I have the conditions written down
+        but I will need to include that in here when I am able to find it.
+    6.) In the backend of the project I will need to migrate the sql server database to a sqlite file. this allows for portability
+        of data hosting and not reliant on connecting to a server directly.
+    7.) once the project is in a good enough state, I would want to add it to the backend sln so that when I run the program,
+        it will start both the back end and front end simultaneously.
+    8.) there are some old tasks that still need to be completed from prior to this new update. need to take a look at the old task file.
+    9.) some components needs to be updated such as the add and update components so that include property population of the SoccerModel
+        object. this is because its still using the old model as a template object.
+    10.) there should be one more component that will act as a popup menu, similar to add and update mat-menu, so that users can determine
+        which columns they would prefer to be visisble.

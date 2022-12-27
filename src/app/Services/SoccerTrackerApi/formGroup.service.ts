@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+//this is to create a form group aka the properties of the columns that come from the api
 @Injectable({
   providedIn: 'root',
 })
@@ -10,50 +11,57 @@ export class FormGroupService {
   newFormGroup() {
     return new FormGroup({
       id: new FormControl(null),
-      Team_1: new FormControl('', Validators.required),
-      Team_2: new FormControl('', Validators.required),
-      Date: new FormControl(''),
-      ML_Price: new FormControl(''),
-      C_205: new FormControl(''),
-      Price___delta: new FormControl(''),
-      Column1: new FormControl(''),
-      Price_Delta: new FormControl(''),
-      Result: new FormControl('', Validators.required),
-      First_Half_Result: new FormControl('', Validators.required),
-      Final_Score: new FormControl('', Validators.required),
-      Shots: new FormControl(''),
-      SOG: new FormControl(''),
-      Dangerous_Attacks: new FormControl(''),
-      Attacks: new FormControl(''),
-      ACR: new FormControl(''),
-      Possession: new FormControl(''),
-      Card_Count: new FormControl(''),
-      Score_First___Yes_No_: new FormControl('', Validators.required),
+      team1: new FormControl('', Validators.required),
+      team2: new FormControl('', Validators.required),
+      date: new FormControl(''),
+      mlPrice: new FormControl(''),
+      _205: new FormControl(''),
+      priceDelta: new FormControl(''),
+      column1: new FormControl(''),
+      priceDelta1: new FormControl(''),
+      result: new FormControl('', Validators.required),
+      firstHalfResult: new FormControl('', Validators.required),
+      finalScore: new FormControl('', Validators.required),
+      shots: new FormControl(''),
+      sog: new FormControl(''),
+      dangerousAttacks: new FormControl(''),
+      attacks: new FormControl(''),
+      acr: new FormControl(''),
+      possession: new FormControl(''),
+      cardCount: new FormControl(''),
+      scoreFirstYN: new FormControl('', Validators.required),
+      leagueTournament: new FormControl(''),
+      redCardYN: new FormControl(''),
+      clw: new FormControl(''),
+
       //add'1' for radio button, add integer for drop down menu selector
     });
   }
   initializeFormGroup(form: FormGroup) {
     form.setValue({
       id: null,
-      Team_1: '',
-      Team_2: '',
-      Date: '',
-      ML_Price: '',
-      C_205: '',
-      Price___delta: '',
-      Column1: '',
-      Price_Delta: '',
-      Result: '',
-      First_Half_Result: '',
-      Final_Score: '',
-      Shots: '',
-      SOG: '',
-      Dangerous_Attacks: '',
-      Attacks: '',
-      ACR: '',
-      Possession: '',
-      Card_Count: '',
-      Score_First___Yes_No_: '',
+      team1: '',
+      team2: '',
+      date: '',
+      mlPrice: '',
+      _205: '',
+      priceDelta: '',
+      column1: '',
+      priceDelta1: '',
+      result: '',
+      firstHalfResult: '',
+      finalScore: '',
+      shots: '',
+      sog: '',
+      dangerousAttacks: '',
+      attacks: '',
+      acr: '',
+      possession: '',
+      cardCount: '',
+      scoreFirstYN: '',
+      leagueTournament:'',
+      redCardYN:'',
+      clw:''
       //add'1' for radio button, add integer for drop down menu selector
     });
     return form;

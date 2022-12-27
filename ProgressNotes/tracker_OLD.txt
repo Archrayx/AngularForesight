@@ -1,0 +1,26 @@
+!~Current progress - Working on add-entry html file where i will need to have a dropdown select potentailly for team pick that also uses a search through key values of teams(Dynamic dropdown)
+
+link to video: https://www.youtube.com/watch?v=ZGWOc37kQkw
+Timestamp on video is 24:45 at time of stopping
+
+build a way to update and delete entries that match(possibly use foreign keys), side note, entries will probably not be deleted, so only need to work on update feature
+
+
+Places where model property names must be changed to match dbcontext property - services formcontrol, add-item.html - done
+put search form in side nav - deprecated(it is on top of the table headers)
+
+side nav have dropdowns for search properties. - deprecated
+will implement an add table to search feature in side nav to mult table filter
+new generated table will be store in an object to encapsulate its filtering
+it will probably need to be done in the parent component(app.component) with an incremental property(as remove table button)
+
+work on filtering remove 2 columns rename -205 column get list of proper filters - done
+work on edit pop up - done
+
+have ability to show table columns
+
+
+yellow green red for results - color scheme - done
+range for MLPrice
+percent change position - done
+change tag name for ML PC to Price B4 K.O - done

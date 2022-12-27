@@ -22,10 +22,10 @@ export class ColorPalleteService {
     let vals = ['T', 'F'];
     let TF = {
       TournamentGameColor: vals[Math.floor(Math.random() * vals.length)],
-      RedCard: vals[Math.floor(Math.random() * vals.length)],
+      RedCardYN: vals[Math.floor(Math.random() * vals.length)],
     };
     if (TF.TournamentGameColor == 'T') {
-      if (TF.RedCard == 'T') {
+      if (TF.RedCardYN == 'T') {
         return '#00d9ff';
       } else {
         return '#f1aa25';
@@ -38,9 +38,9 @@ export class ColorPalleteService {
     let vals = ['T', 'F'];
     let TF = {
       TournamentGameColor: vals[Math.floor(Math.random() * vals.length)],
-      RedCard: vals[Math.floor(Math.random() * vals.length)],
+      RedCardYN: vals[Math.floor(Math.random() * vals.length)],
     };
-    if (TF.RedCard == 'T') {
+    if (TF.RedCardYN == 'T') {
       return '#00d9ff';
     }
     return;
