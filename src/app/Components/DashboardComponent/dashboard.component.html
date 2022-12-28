@@ -63,15 +63,13 @@
         </div>
 
         <mat-menu #columnAdjuster>
-          <form [formGroup]="ColumnsForm">
             <div *ngFor="let item of filterFormsObject">
-                <mat-checkbox [FormControl]="ColumnsForm.controls[item.key]" [checked]="ColumnsForm.controls[item.key].value"
-                             (click)="test(item)" align="start"
+                <mat-checkbox [FormControl]="item.hide" [checked]="item.hide.value"
+                             (click)="$event.stopPropagation()" align="start" (change)="updateDisplayedColumns(item,$event)"
                             color="primary">
                     {{item.key}}
                 </mat-checkbox>
                 </div>
-          </form>
         </mat-menu>
 
 

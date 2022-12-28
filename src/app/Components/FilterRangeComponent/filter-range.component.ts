@@ -16,6 +16,7 @@ export class FilterRangeComponent implements OnInit {
   dashbaordData : MatTableDataSource<SoccerModel>;
   Min : number = 0;
   Max : number = 0;
+  MinMaxLibrary : {} = {}
   constructor(@Inject(MAT_DIALOG_DATA) public data : any) {
     this.filterItems = data.filterItems.value;
     this.dashbaordData = data.data.value;

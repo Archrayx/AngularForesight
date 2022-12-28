@@ -103,13 +103,8 @@ export class DashboardComponent implements OnInit {
   }
   setSubscribers(){
     this.filterFormsObject.forEach((item, index) => {
-      console.log(this.ColumnsForm.controls[item.key].value)
-      this.ColumnsForm.controls[item.key].valueChanges.subscribe((value : any) =>
-          {
-            console.log(`checkbox value: ${value}`);
-            item.hide.setValue(value);
-            this.createDisplayedColumns();
-          })
+      // console.log(this.ColumnsForm.controls[item.key].value)
+
       if (index == 3 || index == 4)
       {
         item.form.
@@ -155,9 +150,6 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-  test(item : any){
-    console.log(this.ColumnsForm.controls[item.key].value)
-  }
   //custom cells func
   createDisplayedColumns() {
     this.setSubscribers();
@@ -167,6 +159,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  updateDisplayedColumns( item : FilterItem, event?: any){
+    item.hide.setValue(event.checked)
+    this.createDisplayedColumns();
+  }
   setColumnForm() : FormGroup
   {
     let form : FormGroup = new FormGroup({})
