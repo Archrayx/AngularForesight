@@ -1,10 +1,10 @@
-import new data
-add all columns as options
-search team by first letter then remaining 
+import new data - done
+add all columns as options for hiding - done
+search team by first letter then remaining
 implied probability calulation difference - later
-date column colors for cl or T games 
+date column colors for cl or T games
 price delta color by threshold percent
-1 2 3 for red card 
+1 2 3 for red card
 
 primitive analytics
 outline of wolf

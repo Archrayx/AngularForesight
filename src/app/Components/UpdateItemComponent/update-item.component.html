@@ -6,6 +6,7 @@
 
             <mat-grid-tile>
                 <div class="controles-container">
+                  <!-- Team 1 -->
                     <mat-form-field>
                         <input formControlName="team1" matInput placeholder="Team 1">
                         <mat-error>This Field Is Mandatory</mat-error>
@@ -13,7 +14,7 @@
                       <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
-                    <mat-checkbox class="example-margin">Home Team</mat-checkbox>
+                    <!-- Team 2 -->
                     <mat-form-field>
                         <input formControlName="team2" matInput placeholder="Team 2">
                         <mat-error>This Field Is Mandatory</mat-error>
@@ -21,9 +22,8 @@
                        <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
-                    <mat-checkbox class="example-margin">Home Team</mat-checkbox>
 
-
+                    <!-- Date -->
                     <mat-form-field>
                         <input #datepickerInput class="mat-datepicker-input" matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date">
                         <button matSuffix mat-icon-button arial-label="clear">
@@ -36,24 +36,28 @@
 
 
 
+                    <!-- MLPrice -->
                     <mat-form-field>
                         <input formControlName="mlPrice" matInput placeholder="ML Price">
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="service.form.patchValue({mlPrice:''})">
                       <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
+                    <!-- KO Price -->
                     <mat-form-field>
                         <input formControlName="_205" matInput placeholder="K.O Price">
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="service.form.patchValue({_205:''})">
                       <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
+                    <!-- Result -->
                     <mat-form-field>
                         <input formControlName="result" matInput placeholder="Result">
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="service.form.patchValue({result:''})">
                       <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
+                    <!-- FirstHalf -->
                     <mat-form-field>
                         <input formControlName="firstHalfResult" matInput placeholder="First Half Result">
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="service.form.patchValue({firstHalfResult:''})">
@@ -110,9 +114,6 @@
                       <mat-icon>close</mat-icon>
                     </button>
                     </mat-form-field>
-                    <mat-form-field>
-                        <input formControlName="scoreFirstYN" matInput placeholder="Score First">
-                    </mat-form-field>
                     <div class="add-bottom-padding">
                         <label id="radio-button-Score-First">Score First?</label>
                         <mat-radio-group aria-labelledby="radio-button-Score-First" formControlName="scoreFirstYN">
@@ -120,6 +121,30 @@
                             <mat-radio-button value="N">No</mat-radio-button>
                         </mat-radio-group>
                     </div>
+                    <div class="add-bottom-padding">
+                      <label id="radio-button-Score-First">League Tournament?</label>
+                      <mat-radio-group aria-labelledby="radio-button-Score-First" formControlName="leagueTournament">
+                          <mat-radio-button value="T">Yes</mat-radio-button>
+                          <mat-radio-button value="">No</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+                  <div class="add-bottom-padding">
+                    <label id="radio-button-Score-First">Red Card?</label>
+                    <mat-radio-group aria-labelledby="radio-button-Score-First" formControlName="redCardYN">
+                      <mat-radio-button value="">None</mat-radio-button>
+                      <mat-radio-button value="1">Team 1</mat-radio-button>
+                      <mat-radio-button value="2">Team 2</mat-radio-button>
+                      <mat-radio-button value="3">Both</mat-radio-button>
+
+                    </mat-radio-group>
+                </div>
+                <div class="add-bottom-padding">
+                  <label id="radio-button-Score-First">TW?</label>
+                  <mat-radio-group aria-labelledby="radio-button-Score-First" formControlName="clw">
+                      <mat-radio-button value="TW">Yes</mat-radio-button>
+                      <mat-radio-button value="">No</mat-radio-button>
+                  </mat-radio-group>
+              </div>
                 </div>
                 <div class="controles-container">
                     <div class="button-row">

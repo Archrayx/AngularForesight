@@ -68,7 +68,7 @@ export class SoccerTrackerApiService implements OnInit {
     return this.http.get<SoccerModel>(`${this.baseUrl}SoccerTracker/${id}`);
   }
 
-  create(data: SoccerModel): void {
+  create(data: any): void {
     this.http
       .post(`${this.baseUrl}addSoccerTracker`, data)
       .subscribe((data) => {

@@ -67,7 +67,7 @@
                 <mat-checkbox [FormControl]="item.hide" [checked]="item.hide.value"
                              (click)="$event.stopPropagation()" align="start" (change)="updateDisplayedColumns(item,$event)"
                             color="primary">
-                    {{item.key}}
+                    {{item.header}}
                 </mat-checkbox>
                 </div>
         </mat-menu>
@@ -83,7 +83,7 @@
                 <!-- This Calls the for loop used to create the columns and fill data cells from data source -->
                 <ng-container class="ng-forloop-container" *ngFor="let item of filterFormsObject; let i = index;">
                     <!-- This Ng Container -->
-                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i != 0 && i !=1 && i != 2 && i != 3 && i != 6 && i != 7 && i != 8">
+                    <ng-container class="ng-column-container" [matColumnDef]='item.key' *ngIf="i != 0 && i !=1 && i != 2 && i != 3 && i != 5 && i != 6 && i != 7 && i != 8 && i != 13 && i != 14">
                         <mat-header-cell class="header-cell" [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
                             <br>
                             <!-- mat-sort-header matSort-->
@@ -161,6 +161,20 @@
                             <mat-cell class="cell" *matCellDef='let element'>{{element[item.key]}}</mat-cell>
                     </ng-container>
 
+                    <!-- Price Delta1 --or-- PriceDelta that matters lol -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 5">
+                      <mat-header-cell class="header-cell" [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                          <!-- mat-sort-header matSort-->
+                          <div>
+                              <mat-label class="header-label">{{item.header}}</mat-label>
+                              <mat-form-field class="header-form-field" appearance="outline">
+                                  <input matInput [placeholder]="item.header" [formControl]="item.form">
+                              </mat-form-field>
+                          </div>
+                      </mat-header-cell>
+                          <mat-cell class="cell" *matCellDef='let element'>{{element[item.key] | number: '1.2-2'}}%</mat-cell>
+                  </ng-container>
+
                     <!-- Result Column -->
                     <ng-container [matColumnDef]='item.key' *ngIf="i == 6">
                         <mat-header-cell class="header-cell" [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
@@ -206,7 +220,35 @@
                             <mat-cell class="cell" *matCellDef='let element' [style.background-color]="element.FinalScoreColor">{{element[item.key]}}</mat-cell>
                         </ng-container>
                     </ng-container>
+
+                    <!-- acr Column -->
+                    <ng-container [matColumnDef]='item.key' *ngIf="i == 13">
+                      <mat-header-cell class="header-cell" [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                          <!-- mat-sort-header matSort-->
+                          <div>
+                              <mat-label class="header-label">{{item.header}}</mat-label>
+                              <mat-form-field class="header-form-field" appearance="outline">
+                                  <input matInput [placeholder]="item.header" [formControl]="item.form">
+                              </mat-form-field>
+                          </div>
+                      </mat-header-cell>
+                          <mat-cell class="cell" *matCellDef='let element'>{{element[item.key] | number: '1.2-2'}}%</mat-cell>
+                  </ng-container>
+                  <!-- possession column -->
+                  <ng-container [matColumnDef]='item.key' *ngIf="i == 14">
+                    <mat-header-cell class="header-cell" [style.flex-direction]="'column'" *matHeaderCellDef floatLabel="never">
+                        <!-- mat-sort-header matSort-->
+                        <div>
+                            <mat-label class="header-label">{{item.header}}</mat-label>
+                            <mat-form-field class="header-form-field" appearance="outline">
+                                <input matInput [placeholder]="item.header" [formControl]="item.form">
+                            </mat-form-field>
+                        </div>
+                    </mat-header-cell>
+                        <mat-cell class="cell" *matCellDef='let element'>{{element[item.key] * 100 | number: '1.0-0'}}%</mat-cell>
                 </ng-container>
+                </ng-container>
+
 
 
 

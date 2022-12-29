@@ -26,8 +26,8 @@ currentItem:any;
   ngOnInit(): void {
 
 this.service.form = this.data;
-console.log("form: " + this.service.form);
-console.log("data: " + this.data)
+console.log("form: " + this.service.form.value);
+console.log("data: " + this.data.value)
   }
 
 
@@ -40,6 +40,7 @@ console.log("data: " + this.data)
 
     if (this.service.form.valid) {
       console.log("Test Submit Correct");
+      this.service.form.controls.date.setValue(this.service.form.controls.date.value)
       this.service.update(this.service.form.controls['id'].value, this.service.form.value);
     }
 
@@ -54,6 +55,5 @@ console.log("data: " + this.data)
     //this.notification.success(' Submitted Successfully 🙌');
 
   }
-
 }
 

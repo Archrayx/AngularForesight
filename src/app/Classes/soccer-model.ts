@@ -3,12 +3,12 @@ export interface SoccerModel {
   id: Number;
   team1: string;
   team2: string;
-  date: string | null;
+  date: Date | null;
   mlPrice: Number;
   _205: Number;
-  priceDelta : number;
-  column1 : number;
-  priceDelta1: string;
+  priceDelta : Number;
+  column1 : Number;
+  priceDelta1: Number;
   result: string;
   firstHalfResult: string;
   finalScore: string;
@@ -16,8 +16,8 @@ export interface SoccerModel {
   sog: Number;
   dangerousAttacks: Number;
   attacks: Number;
-  acr: string;
-  possession: string;
+  acr: Number;
+  possession: Number;
   cardCount: Number;
   scoreFirstYN: string;
   leagueTournament: string;

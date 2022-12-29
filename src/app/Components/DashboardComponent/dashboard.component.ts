@@ -186,22 +186,22 @@ export class DashboardComponent implements OnInit {
       }
 
       if (remoteData[index].priceDelta1 != null) {
-        remoteData[index].priceDelta1 =
-          (Number(remoteData[index].priceDelta1)).toFixed(2).toString() + '%';
+        // remoteData[index].priceDelta1 =
+        //   (Number(remoteData[index].priceDelta1)).toFixed(2).toString() + '%';
 
           //ml price and ko price condition for one positive and one negative
       }
       //
       if (remoteData[index].acr != null) {
-        remoteData[index].acr =
-          (Number(remoteData[index].acr)).toFixed(2).toString() + '%';
+        // remoteData[index].acr =
+        //   (Number(remoteData[index].acr)).toFixed(2).toString() + '%';
       }
-      if (remoteData[index].date != null) {
-        remoteData[index].date = this.datePipe.transform(
-          remoteData[index].date,
-          'MM/dd/yyyy'
-        );
-      }
+      // if (remoteData[index].date != null) {
+      //   remoteData[index].date = this.datePipe.transform(
+      //     remoteData[index].date,
+      //     'MM/dd/yyyy'
+      //   );
+      // }
       if (remoteData[index].result != null) {
         remoteData[index].resultColor = this.colorPalletes.resultColorPallete(
           remoteData[index].result
@@ -233,8 +233,8 @@ export class DashboardComponent implements OnInit {
           );
       }
       if (remoteData[index].possession != null) {
-        remoteData[index].possession =
-          (Number(remoteData[index].possession)*100).toFixed(0).toString() + '%';
+        // remoteData[index].possession =
+        //   (Number(remoteData[index].possession)*100).toFixed(0).toString() + '%';
       }
     });
 
@@ -317,11 +317,16 @@ export class DashboardComponent implements OnInit {
   */
   openDialogUpdate(item: any) {
     Object.keys(this.service.form.controls).forEach((key, index) => {
-      this.service.form.patchValue({ [key]: item[key] });
+      if (key == "date"){
+        this.service.form.patchValue ({[key]: new Date(item[key])})
+      }
+      else{
+        this.service.form.patchValue({ [key]: item[key] });
+      }
     });
     this.dialog.open(UpdateItemComponent, {
       height: 'auto',
-      width: '60%',
+      width: '70%',
       data: this.service.form,
     });
   }
