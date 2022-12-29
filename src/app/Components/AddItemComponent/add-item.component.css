@@ -39,3 +39,7 @@ mat-checkbox {
 .button-row button {
     margin: 5px;
 }
+/* radio button spacing at bottom */
+.add-bottom-padding{
+  margin-top: 20px;
+}

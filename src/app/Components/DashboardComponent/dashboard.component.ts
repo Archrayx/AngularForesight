@@ -180,28 +180,6 @@ export class DashboardComponent implements OnInit {
         TournamentGameColor: vals[Math.floor(Math.random() * vals.length)],
         redCardYN: vals[Math.floor(Math.random() * vals.length)],
       };
-      //Data Manipulations Area with if statements before inserting into table columns
-      if (remoteData[index].mlPrice != null) {
-        //tempMLArray.push(+remoteData[index].mlPrice);
-      }
-
-      if (remoteData[index].priceDelta1 != null) {
-        // remoteData[index].priceDelta1 =
-        //   (Number(remoteData[index].priceDelta1)).toFixed(2).toString() + '%';
-
-          //ml price and ko price condition for one positive and one negative
-      }
-      //
-      if (remoteData[index].acr != null) {
-        // remoteData[index].acr =
-        //   (Number(remoteData[index].acr)).toFixed(2).toString() + '%';
-      }
-      // if (remoteData[index].date != null) {
-      //   remoteData[index].date = this.datePipe.transform(
-      //     remoteData[index].date,
-      //     'MM/dd/yyyy'
-      //   );
-      // }
       if (remoteData[index].result != null) {
         remoteData[index].resultColor = this.colorPalletes.resultColorPallete(
           remoteData[index].result
@@ -232,22 +210,14 @@ export class DashboardComponent implements OnInit {
             //remoteData[index].leagueTournament
           );
       }
-      if (remoteData[index].possession != null) {
-        // remoteData[index].possession =
-        //   (Number(remoteData[index].possession)*100).toFixed(0).toString() + '%';
-      }
-    });
 
+    });
     this.assignMatTableProperties(remoteData);
   }
 
-  /**
-   * this is to be possibly partially moved to the new FilterRangeComponent
-   */
   async assignMatTableProperties(remoteData: SoccerModel[]) {
     console.log('assigning Table Properties...');
     this.dashBoardData = new MatTableDataSource(remoteData);
-
     this.dashBoardData.sort = this.sort;
     this.dashBoardData.paginator = this.paginator;
     this.dashBoardData.filterPredicate = this.createFilter();
